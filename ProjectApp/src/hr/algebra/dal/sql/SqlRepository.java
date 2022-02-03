@@ -16,7 +16,7 @@ import java.sql.Connection;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.Types;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -746,6 +746,15 @@ public class SqlRepository implements Repository {
                     CallableStatement stmt = con.prepareCall(PROC_RESET_TO_DEFAULT)) {
                 stmt.executeUpdate();
             }
+        }
+    }
+    public void clearAllData() throws Exception {
+        FileUtils.clearDirectory(new File("assets"), true);
+
+        DataSource dataSource = DataSourceSingleton.getInstance();
+        try (Connection con = dataSource.getConnection();
+                CallableStatement stmt = con.prepareCall(PROC_RESET_TO_DEFAULT)) {
+            stmt.executeUpdate();
         }
     }
 

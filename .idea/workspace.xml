@@ -5,22 +5,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1cfaed01-f239-4e67-b2f2-781a78bbf8ee" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/Java1Project.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Java1Project.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/407d58b6-b15d-425a-9ab2-f871bdacd430.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/407d58b6-b15d-425a-9ab2-f871bdacd430.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/407d58b6-b15d-425a-9ab2-f871bdacd430/storage_v2/_src_/database/Java1Project.6jWsng/schema/dbo.sYMBAA.meta" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/407d58b6-b15d-425a-9ab2-f871bdacd430/storage_v2/_src_/database/Java1Project.6jWsng/schema/dbo.sYMBAA.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/407d58b6-b15d-425a-9ab2-f871bdacd430/storage_v2/_src_/database/Java1Project.6jWsng/schema/dbo.sYMBAA.zip" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/407d58b6-b15d-425a-9ab2-f871bdacd430/storage_v2/_src_/database/Java1Project.6jWsng/schema/dbo.sYMBAA.zip" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/407d58b6-b15d-425a-9ab2-f871bdacd430/storage_v2/_src_/database/master.YiqNvw/schema/dbo.sYMBAA.meta" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/407d58b6-b15d-425a-9ab2-f871bdacd430/storage_v2/_src_/database/master.YiqNvw/schema/dbo.sYMBAA.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/sqldialects.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/sqldialects.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Java1Project_mssql_create.sql" beforeDir="false" afterPath="$PROJECT_DIR$/Java1Project_mssql_create.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ProjectApp/nbproject/build-impl.xml" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectApp/nbproject/build-impl.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ProjectApp/nbproject/genfiles.properties" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectApp/nbproject/genfiles.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ProjectApp/nbproject/private/private.properties" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectApp/nbproject/private/private.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ProjectApp/nbproject/project.properties" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectApp/nbproject/project.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ProjectApp/nbproject/project.xml" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectApp/nbproject/project.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Utilities/src/hr/algebra/factory/UrlConnectionFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/Utilities/src/hr/algebra/factory/UrlConnectionFactory.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProjectApp/src/hr/algebra/EditMoviesPanel.form" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectApp/src/hr/algebra/EditMoviesPanel.form" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProjectApp/src/hr/algebra/EditMoviesPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectApp/src/hr/algebra/EditMoviesPanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProjectApp/src/hr/algebra/GetMovieFeedPanel.form" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectApp/src/hr/algebra/GetMovieFeedPanel.form" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProjectApp/src/hr/algebra/GetMovieFeedPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectApp/src/hr/algebra/GetMovieFeedPanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProjectApp/src/hr/algebra/dal/Repository.java" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectApp/src/hr/algebra/dal/Repository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProjectApp/src/hr/algebra/dal/sql/SqlRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectApp/src/hr/algebra/dal/sql/SqlRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProjectApp/src/hr/algebra/model/Movie.java" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectApp/src/hr/algebra/model/Movie.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProjectApp/src/hr/algebra/parsers/rss/MovieParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectApp/src/hr/algebra/parsers/rss/MovieParser.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

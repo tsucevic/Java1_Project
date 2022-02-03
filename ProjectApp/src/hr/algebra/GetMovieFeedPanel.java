@@ -5,9 +5,12 @@
  */
 package hr.algebra;
 
+import hr.algebra.dal.RepoFactory;
+import hr.algebra.dal.Repository;
 import hr.algebra.model.Movie;
 import hr.algebra.model.MovieTableModel;
 import hr.algebra.parsers.rss.MovieParser;
+import hr.algebra.utils.JAXBUtils;
 import hr.algebra.utils.MessageUtils;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -15,6 +18,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ListSelectionModel;
+import javax.xml.bind.JAXBException;
 import javax.xml.stream.XMLStreamException;
 
 /**
@@ -23,9 +27,12 @@ import javax.xml.stream.XMLStreamException;
  */
 public class GetMovieFeedPanel extends javax.swing.JPanel {
 
+    
+    private static final String FILENAME = "movies.xml";
     /**
      * Creates new form GetMovieFeedPanel
      */
+    private Repository repo;
     
     private List<Movie> downloadedMovies;
     private MovieTableModel movieTableModel;
@@ -48,6 +55,7 @@ public class GetMovieFeedPanel extends javax.swing.JPanel {
         tblMovies = new javax.swing.JTable();
         btnDownloadRss = new javax.swing.JButton();
         btnUploadDB = new javax.swing.JButton();
+        btnExportXml = new javax.swing.JButton();
 
         tblMovies.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -77,6 +85,14 @@ public class GetMovieFeedPanel extends javax.swing.JPanel {
             }
         });
 
+        btnExportXml.setEnabled(false);
+        btnExportXml.setLabel("Export to XML");
+        btnExportXml.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExportXmlActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -89,10 +105,10 @@ public class GetMovieFeedPanel extends javax.swing.JPanel {
                         .addComponent(btnDownloadRss, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(btnUploadDB, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(spMovies, javax.swing.GroupLayout.PREFERRED_SIZE, 1180, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap())))
+                        .addGap(18, 18, 18)
+                        .addComponent(btnExportXml, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(spMovies, javax.swing.GroupLayout.PREFERRED_SIZE, 1180, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -102,7 +118,8 @@ public class GetMovieFeedPanel extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnDownloadRss, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnUploadDB, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnUploadDB, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnExportXml, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(14, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -115,18 +132,37 @@ public class GetMovieFeedPanel extends javax.swing.JPanel {
             downloadedMovies = MovieParser.parse();
             movieTableModel.setMovies(downloadedMovies);
             btnUploadDB.setEnabled(true);
+            btnExportXml.setEnabled(true);
         } catch (IOException | XMLStreamException ex) {
             Logger.getLogger(GetMovieFeedPanel.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btnDownloadRssActionPerformed
 
     private void btnUploadDBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUploadDBActionPerformed
-        // TODO add your handling code here:
+        new Thread(() -> {
+            try {
+                repo.createMovies(downloadedMovies);
+                MessageUtils.showInformationMessage("Database upload", "Upload to database complete.");
+            } catch (Exception ex) {
+                Logger.getLogger(GetMovieFeedPanel.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }).start();
     }//GEN-LAST:event_btnUploadDBActionPerformed
+
+    private void btnExportXmlActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExportXmlActionPerformed
+        try {
+            JAXBUtils.save(downloadedMovies, FILENAME);
+            MessageUtils.showInformationMessage("Info", "Saved");
+        } catch (JAXBException ex) {
+            MessageUtils.showErrorMessage("Error", "Unable to save movies");
+            Logger.getLogger(GetMovieFeedPanel.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnExportXmlActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnDownloadRss;
+    private javax.swing.JButton btnExportXml;
     private javax.swing.JButton btnUploadDB;
     private javax.swing.JScrollPane spMovies;
     private javax.swing.JTable tblMovies;
@@ -134,7 +170,7 @@ public class GetMovieFeedPanel extends javax.swing.JPanel {
 
     private void initOther() {
         try {
-            //setupRepo();
+            setupRepo();
             setupTable();
         } catch (Exception ex) {
             Logger.getLogger(GetMovieFeedPanel.class.getName()).log(Level.SEVERE, null, ex);
@@ -143,8 +179,9 @@ public class GetMovieFeedPanel extends javax.swing.JPanel {
         }
     }
 
-    private void setupRepo() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    private void setupRepo() throws Exception {
+        repo = RepoFactory.getRepository();
+        //repo.clearAllData();
     }
 
     private void setupTable() {

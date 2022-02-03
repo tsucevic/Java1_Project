@@ -95,12 +95,16 @@ public class MovieParser {
                                     if (movie != null && !data.isEmpty()) {
                                         List<String> people = seperatePeople(data);
                                         movie.setDirectors(makePeople(people));
+                                    } else if (movie != null && data.isEmpty()){
+                                        movie.setDirectors(new ArrayList<Person>());
                                     }
                                     break;
                                 case ACTORS:
                                     if (movie != null && !data.isEmpty()) {
                                         List<String> people = seperatePeople(data);
                                         movie.setActors(makePeople(people));
+                                    } else if (movie != null && data.isEmpty()){ //FUCK YOU JAHAC ZMAJEVA
+                                        movie.setActors(new ArrayList<Person>());
                                     }
                                     break;
                                 case LENGTH:
@@ -187,7 +191,7 @@ public class MovieParser {
     }
     
     private static List<Person> makePeople(List<String> people) {
-        List<Person> persons= new ArrayList<>();
+        List<Person> persons = new ArrayList<>();
         Person person;
         for (String name : people) {
             person = new Person(name);
