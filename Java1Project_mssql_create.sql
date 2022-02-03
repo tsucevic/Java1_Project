@@ -16,7 +16,7 @@ drop table if exists MovieDirector
 drop table if exists Actors
 drop table if exists Directors
 drop table if exists People
-drop table if exists Movie
+drop table if exists Movies
 go
 -- endregion
 -- region Content tables
@@ -47,7 +47,6 @@ CREATE TABLE [Movies] (
 	IDMovie int NOT NULL identity CONSTRAINT [PK_MOVIES] PRIMARY KEY nonCLUSTERED,
 	Title nvarchar(256) NOT NULL,
 	OriginalTitle nvarchar(256),
-	DirectorID int NOT NULL,
 	DescriptionHTML nvarchar(4000),
 	Length int,
 	Genre nvarchar(64),
@@ -56,8 +55,7 @@ CREATE TABLE [Movies] (
 	Link nvarchar(512),
 	GUID nvarchar(512) UNIQUE,
 	StartsPlaying nvarchar(512),
-    constraint FK_MovieDirector foreign key (DirectorID)
-        references Directors
+
 )
 GO
 CREATE TABLE [MovieActor] (
@@ -67,6 +65,15 @@ CREATE TABLE [MovieActor] (
 	    references Movies,
     constraint FK_MovieActor_Actors foreign key (ActorID)
         references Actors
+)
+GO
+CREATE TABLE [MovieDirector] (
+	MovieID int NOT NULL,
+	DirectorID int NOT NULL,
+	constraint FK_MovieDirector_Movies foreign key (MovieID)
+	    references Movies,
+    constraint FK_MovieDirector_Actors foreign key (DirectorID)
+        references Directors
 )
 GO
 -- endregion
@@ -129,6 +136,7 @@ as
         delete from Users where null is null
         delete from Roles where null is null
         delete from MovieActor where null is null
+        delete from MovieDirector where null is null
         delete from Actors where null is null
         delete from Movies where null is null
         delete from Directors where null is null
@@ -171,7 +179,6 @@ go
 create proc proc_create_movie
     @Title nvarchar(256),
     @OriginalTitle nvarchar(256),
-    @DirectorID int,
     @DescriptionHTML nvarchar(4000),
     @Length int,
     @Genre nvarchar(64),
@@ -186,7 +193,6 @@ as
         insert into Movies
         values (@Title,
                 @OriginalTitle,
-                @DirectorID,
                 @DescriptionHTML,
                 @Length,
                 @Genre,
@@ -206,7 +212,6 @@ as
         select IDMovie,
                Title,
                OriginalTitle,
-               FullName as Director,
                DescriptionHTML,
                Length,
                Genre,
@@ -215,9 +220,7 @@ as
                Link,
                GUID,
                StartsPlaying
-        from Movies as M
-            inner join Directors D on D.IDDirector = M.DirectorID
-            inner join People P on D.PersonID = P.IDPerson
+        from Movies
         where IDMovie = @IDMovie
     end
 go
@@ -229,7 +232,6 @@ as
         select IDMovie,
                Title,
                OriginalTitle,
-               FullName as Director,
                DescriptionHTML,
                Length,
                Genre,
@@ -238,9 +240,7 @@ as
                Link,
                GUID,
                StartsPlaying
-        from Movies as M
-            inner join Directors D on D.IDDirector = M.DirectorID
-            inner join People P on D.PersonID = P.IDPerson
+        from Movies
     end
 go
 drop procedure if exists proc_update_movie
@@ -249,7 +249,6 @@ create proc proc_update_movie
     @IDMovie int,
     @Title nvarchar(256),
     @OriginalTitle nvarchar(256),
-    @DirectorID int,
     @DescriptionHTML nvarchar(4000),
     @Length int,
     @Genre nvarchar(64),
@@ -263,7 +262,6 @@ as
         update Movies
             set Title           = @Title,
                 OriginalTitle   = @OriginalTitle,
-                DirectorID      = @DirectorID,
                 DescriptionHTML = @DescriptionHTML,
                 Length          = @Length,
                 Genre           = @Genre,
@@ -460,7 +458,7 @@ create proc proc_delete_director @IDDirector int
 as
     begin
         delete
-        from Movies
+        from MovieDirector
         where DirectorID = @IDDirector
         delete
         from Directors
@@ -504,6 +502,45 @@ as
         from MovieActor
         where MovieID = @MovieID
           and ActorID = @ActorID
+    end
+go
+-- endregion
+
+-- region Movie Director m2m CRD
+drop procedure if exists proc_create_movie_director
+go
+create proc proc_create_movie_director
+    @MovieID int,
+    @DirectorID int
+as
+    begin
+        insert into MovieDirector
+        values (@MovieID, @DirectorID)
+    end
+go
+drop procedure if exists proc_read_movie_director
+go
+create proc proc_read_movie_director @MovieID int
+as
+    begin
+        select A.*, P.FullName
+        from Directors A
+                 inner join People P on P.IDPerson = A.PersonID
+                 inner join MovieDirector MA on A.IDDirector = MA.DirectorID
+        where MovieID = @MovieID
+    end
+go
+drop procedure if exists proc_delete_movie_director
+go
+create proc proc_delete_movie_director
+    @MovieID int,
+    @DirectorID int
+as
+    begin
+        delete
+        from MovieDirector
+        where MovieID = @MovieID
+          and DirectorID = @DirectorID
     end
 go
 -- endregion

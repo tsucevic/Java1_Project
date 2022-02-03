@@ -109,5 +109,17 @@ public class FileUtils {
         }
         return Optional.empty();
     }
+    
+    public static void clearDirectory(File file, boolean leaveDir) {
+        File[] contents = file.listFiles();
+        if (contents != null) {
+            for (File f : contents) {
+                clearDirectory(f, false);
+            }
+        }
+        if (!leaveDir) {
+            file.delete();
+        }
+    }
 
 }
